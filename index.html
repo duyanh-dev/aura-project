@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Digital | Creative Agency</title>
+    <!-- GSAP Core & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-barba="wrapper">
+
+    <!-- Navbar nằm ngoài vùng chuyển trang -->
+    <nav class="navbar">
+        <div class="logo">AURA.</div>
+        <ul class="nav-links">
+            <li><a href="#home">Trang chủ</a></li>
+            <li><a href="./pages/test/test.html">Dịch vụ</a></li>
+            <li><a href="./pages/work/work.html">Dự án</a></li>
+            <li><a href="about.html">Về chúng tôi</a></li>
+            <li><a href="contact.html" class="nav-btn">Liên hệ</a></li>
+        </ul>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Container cho trang Home -->
+    <main data-barba="container" data-barba-namespace="home">
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">Kiến tạo<br><span class="outline-text">Trải nghiệm</span> Số.</h1>
+                <p class="hero-subtitle">Chúng tôi là creative agency mang đến những giải pháp web vượt chuẩn mực. Đưa thương hiệu của bạn vươn xa qua lăng kính của nghệ thuật và công nghệ.</p>
+                <a href="#work" class="btn primary-btn">Khám phá dự án</a>
+            </div>
+        </section>
+
+        <section id="services" class="services">
+            <div class="container">
+                <h2 class="section-title">Chuyên môn <br>của chúng tôi</h2>
+                <div class="service-grid">
+                    <div class="service-card">
+                        <div class="card-icon">01</div>
+                        <h3>Front-End Architecture</h3>
+                        <p>Xây dựng nền tảng vững chắc và giao diện mượt mà với cấu trúc chuẩn HTML, SCSS và JavaScript thuần, tối ưu hóa hiệu suất hiển thị.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="card-icon">02</div>
+                        <h3>Custom Tooling</h3>
+                        <p>Phát triển các công cụ nội bộ và Chrome Extension chuyên dụng, giúp tăng cường hiệu suất làm việc và cá nhân hóa luồng nghiệp vụ.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="card-icon">03</div>
+                        <h3>Motion & Interaction</h3>
+                        <p>Thổi hồn vào website bằng các tương tác cuộn và hiệu ứng chuyển động phức tạp, mang lại trải nghiệm thị giác khác biệt.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="work" class="work">
+            <div class="container">
+                <h2 class="section-title">Tác phẩm <br>nổi bật</h2>
+                <div class="work-gallery">
+                    <a href="project-alpha.html" class="work-item">
+                        <div class="work-img"></div>
+                        <div class="work-info">
+                            <h3>Maris E-commerce</h3>
+                            <p>Web Development / UI Design</p>
+                        </div>
+                    </a>
+                    <a href="project-beta.html" class="work-item">
+                        <div class="work-img"></div>
+                        <div class="work-info">
+                            <h3>FinTrack App Platform</h3>
+                            <p>Web App / Frontend</p>
+                        </div>
+                    </a>
+                    <a href="project-gamma.html" class="work-item">
+                        <div class="work-img"></div>
+                        <div class="work-info">
+                            <h3>DesktopLab Toolkit</h3>
+                            <p>Internal Tools / Extension</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer nằm ngoài vùng chuyển trang -->
+    <footer class="footer">
+        <div class="footer-content">
+            <h2 class="footer-title">Sẵn sàng nâng tầm<br>thương hiệu của bạn?</h2>
+            <a href="contact.html" class="btn outline-btn">Bắt đầu dự án</a>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Aura Digital. All rights reserved.</p>
+            <div class="socials">
+                <a href="#">Github</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">Dribbble</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Thư viện và Script -->
+    <script src="https://cdn.jsdelivr.net/npm/@barba/core"></script>
+    <!-- Phải nạp file js của work vào để nó sẵn sàng khởi chạy khi chuyển trang -->
+    <script src="./pages/work/work.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>

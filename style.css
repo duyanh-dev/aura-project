@@ -1,0 +1,148 @@
+
+@import url('./pages/work/work.css');
+
+:root {
+    --bg-color: #0a0a0a;
+    --text-color: #f4f4f4;
+    --accent-color: #ff4a32; /* Đỏ cam nghệ thuật */
+    --gray: #888888;
+    --border-color: #222222;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+a { text-decoration: none; color: inherit; }
+.container { max-width: 1400px; margin: 0 auto; padding: 0 5%; }
+
+/* Typography & Buttons */
+.section-title { font-size: 3.5rem; line-height: 1.1; margin-bottom: 4rem; opacity: 0; }
+.btn {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.primary-btn { background: var(--accent-color); color: #fff; border: 1px solid var(--accent-color); }
+.primary-btn:hover { background: transparent; color: var(--accent-color); }
+.outline-btn { background: transparent; border: 1px solid var(--text-color); color: var(--text-color); }
+.outline-btn:hover { background: var(--text-color); color: var(--bg-color); }
+
+/* Navbar */
+.navbar {
+    position: fixed; top: 0; left: 0; width: 100%;
+    padding: 1.5rem 5%;
+    display: flex; justify-content: space-between; align-items: center;
+    z-index: 100;
+    mix-blend-mode: difference;
+}
+.logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; }
+.nav-links { display: flex; list-style: none; gap: 2.5rem; align-items: center; }
+.nav-links a { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; position: relative; }
+.nav-links a::after {
+    content: ''; position: absolute; left: 0; bottom: -5px;
+    width: 0%; height: 1px; background: var(--accent-color);
+    transition: width 0.3s ease;
+}
+.nav-links a:hover::after { width: 100%; }
+.nav-btn { border: 1px solid var(--text-color); padding: 0.5rem 1.2rem; border-radius: 20px; }
+.nav-btn::after { display: none; }
+.hamburger { display: none; cursor: pointer; }
+
+/* Hero Section */
+.hero { height: 100vh; display: flex; align-items: center; padding: 0 5%; }
+.hero-content { max-width: 900px; }
+.hero-title { font-size: clamp(4rem, 8vw, 7rem); line-height: 1; margin-bottom: 2rem; font-weight: 800; opacity: 0; transform: translateY(50px); }
+.outline-text {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--text-color);
+}
+.hero-subtitle { font-size: 1.2rem; color: var(--gray); max-width: 500px; margin-bottom: 3rem; opacity: 0; }
+
+/* Services */
+.services { padding: 8rem 0; background-color: #111; }
+.service-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+}
+.service-card {
+    padding: 3rem 2rem;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.02);
+    transition: transform 0.4s ease, border-color 0.4s ease;
+    opacity: 0;
+    transform: translateY(50px);
+}
+.service-card:hover { transform: translateY(-10px); border-color: var(--accent-color); }
+.card-icon { font-size: 1.2rem; color: var(--accent-color); margin-bottom: 2rem; font-weight: bold; }
+.service-card h3 { font-size: 1.8rem; margin-bottom: 1rem; }
+.service-card p { color: var(--gray); font-size: 1rem; }
+
+/* Work */
+.work { padding: 8rem 0; }
+.work-gallery { display: flex; flex-direction: column; gap: 4rem; }
+.work-item { display: block; opacity: 0; transform: translateY(50px); }
+.work-item:hover .work-img { transform: scale(0.98); filter: grayscale(0); }
+.work-img {
+    width: 100%; height: 60vh;
+    background: #222;
+    border-radius: 16px;
+    margin-bottom: 1.5rem;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.6s ease;
+    filter: grayscale(0.5);
+}
+/* Giả lập ảnh cho dự án */
+.work-item:nth-child(1) .work-img { background: linear-gradient(45deg, #1a2a6c, #b21f1f, #fdbb2d); }
+.work-item:nth-child(2) .work-img { background: linear-gradient(45deg, #000000, #434343); }
+.work-item:nth-child(3) .work-img { background: linear-gradient(45deg, #11998e, #38ef7d); }
+
+.work-info h3 { font-size: 2rem; margin-bottom: 0.5rem; }
+.work-info p { color: var(--gray); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 2px; }
+
+/* Footer */
+.footer { padding: 6rem 5% 2rem; background: #050505; text-align: center; border-top: 1px solid var(--border-color); }
+.footer-title { font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 3rem; }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 6rem; padding-top: 2rem; border-top: 1px solid #1a1a1a; color: var(--gray); font-size: 0.9rem; flex-wrap: wrap; gap: 1rem; }
+.socials { display: flex; gap: 1.5rem; }
+.socials a:hover { color: var(--accent-color); }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; flex-direction: column; gap: 6px; }
+    .hamburger span { width: 30px; height: 2px; background: #fff; }
+    .hero-title { font-size: 3.5rem; }
+    .section-title { font-size: 2.5rem; margin-bottom: 2rem; }
+    .work-img { height: 40vh; }
+    .footer-bottom { justify-content: center; }
+}
+
+
+/* Đảm bảo nội dung trang luôn có nền để không bị nhìn xuyên thấu */
+main[data-barba="container"] {
+    background-color: var(--bg-color); /* FIX LỖI MÀU TRẮNG Ở ĐÂY */
+    width: 100%;
+    min-height: 100vh;
+    transform-origin: center top; 
+}

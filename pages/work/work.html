@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Bui Duy Anh - Interactive Index</title>
+    <!-- 1. BẮT BUỘC CÓ GSAP Ở ĐẦU -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link rel="stylesheet" href="work.css" />
+  </head>
+  
+  <!-- 2. THÊM WRAPPER -->
+  <body data-barba="wrapper">
+    
+    <!-- 3. BỌC TOÀN BỘ GIAO DIỆN VÀO CONTAINER -->
+    <main data-barba="container" data-barba-namespace="work">
+        <div class="bg-grid"></div>
+
+        <!-- TỐI ƯU 1: Thêm style top: 90px để đẩy nút bấm xuống dưới khoảng Navbar -->
+        <!-- Đảm bảo z-index cao để luôn nằm trên lưới 3D -->
+        <header style="top: 90px; z-index: 990; position: fixed; width: 100%;">
+          <div class="logo">
+              <a href="../../index.html" style="margin-left: 20px; font-size: 12px; color: #ff4a32; text-decoration: none; pointer-events: auto; position: relative; z-index: 999;">[ BACK TO HOME ]</a>
+          </div>
+          <!-- Đảm bảo pointer-events: auto để luôn click được -->
+          <div class="menu-btn" onclick="toggleMenu(true)" style="pointer-events: auto; position: relative; z-index: 999;">
+            <span>[ INDEX / <span id="project-counter">0</span> ]</span>
+          </div>
+        </header>
+
+        <!-- TỐI ƯU 2: Tăng z-index của Overlay và Side Menu lên siêu cao (9998 và 9999) 
+             để khi mở ra nó sẽ đè lên che luôn cả Navbar của trang chủ -->
+        <div id="menu-overlay" onclick="toggleMenu(false)" style="z-index: 9998;"></div>
+        <div id="side-menu" style="z-index: 9999;">
+          <div class="menu-header">
+            <span>SELECT PROJECT</span>
+            <div class="close-btn" onclick="toggleMenu(false)" style="pointer-events: auto;">✕</div>
+          </div>
+          <div class="menu-list" id="menu-list-container">
+            <!-- Sinh ra bằng JS -->
+          </div>
+        </div>
+
+        <!-- HUD BOTTOM -->
+        <div class="hud-bottom" style="z-index: 990;">
+          <div class="coord-box">AXIS X <span id="ui-x">0.00</span></div>
+          <div class="ruler-container">
+            <div class="ruler-line"></div>
+            <div class="ruler-ticks"></div>
+            <div class="ruler-cursor" id="ui-cursor"></div>
+          </div>
+          <div class="coord-box" style="text-align: right">
+            AXIS Y <span id="ui-y">0.00</span>
+          </div>
+        </div>
+
+        <div id="viewport">
+          <div id="canvas"></div>
+        </div>
+    </main>
+
+    <!-- 4. NHÚNG CÁC SCRIPT Ở CUỐI TRANG -->
+    <script src="https://cdn.jsdelivr.net/npm/@barba/core"></script>
+    <script src="work.js"></script>
+    <!-- Bắt buộc nhúng index.js để Barba quản lý chuyển trang -->
+    <script src="../../index.js"></script>
+  </body>
+</html>
