@@ -1,10 +1,7 @@
 let workAnimationId; 
+// Object chứa các hàm sự kiện để dễ dàng remove
+const workEvents = {}; 
 
-// Các biến lưu hàm sự kiện để có thể gỡ bỏ (remove) khi rời trang
-let handleMouseDown, handleMouseMove, handleMouseUp;
-let handleTouchStart, handleTouchMove, handleTouchEnd, handleMenuTouchMove;
-
-// Đưa toggleMenu ra toàn cục (window) để file HTML có thể gọi thẻ onclick=""
 window.toggleMenu = function(isOpen) {
     const menu = document.getElementById('side-menu');
     const overlay = document.getElementById('menu-overlay');
@@ -18,7 +15,6 @@ window.toggleMenu = function(isOpen) {
         overlay.classList.remove('active');
     }
 };
-
 // ==========================================
 // HÀM KHỞI TẠO KHÔNG GIAN 3D (CHẠY KHI VÀO TRANG WORK)
 // ==========================================

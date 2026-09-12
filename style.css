@@ -1,10 +1,9 @@
-
 @import url('./pages/work/work.css');
 
 :root {
-    --bg-color: #0a0a0a;
+    --bg-color: #0e0e11; /* Đã cập nhật màu đen chuẩn theo yêu cầu */
     --text-color: #f4f4f4;
-    --accent-color: #ff4a32; /* Đỏ cam nghệ thuật */
+    --accent-color: #ff4a32; 
     --gray: #888888;
     --border-color: #222222;
 }
@@ -68,36 +67,234 @@ a { text-decoration: none; color: inherit; }
 .nav-btn::after { display: none; }
 .hamburger { display: none; cursor: pointer; }
 
-/* Hero Section */
-.hero { height: 100vh; display: flex; align-items: center; padding: 0 5%; }
-.hero-content { max-width: 900px; }
-.hero-title { font-size: clamp(4rem, 8vw, 7rem); line-height: 1; margin-bottom: 2rem; font-weight: 800; opacity: 0; transform: translateY(50px); }
-.outline-text {
-    color: transparent;
-    -webkit-text-stroke: 1px var(--text-color);
+/* =======================================
+   HERO SECTION (STYLE MỚI)
+   ======================================= */
+.hero { 
+    position: relative;
+    height: 100vh; 
+    width: 100%;
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between;
+    padding: 0 5%; 
+    overflow: hidden;
+    /* CHÚ Ý: Bỏ background-color ở thẻ chứa Hero đi nếu có */
 }
-.hero-subtitle { font-size: 1.2rem; color: var(--gray); max-width: 500px; margin-bottom: 3rem; opacity: 0; }
 
-/* Services */
-.services { padding: 8rem 0; background-color: #111; }
-.service-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2rem;
+/* BACKGROUND CANVAS (Mạng lưới tương tác) */
+.hero-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0; /* Nằm dưới cùng */
+    /* QUAN TRỌNG: Pointer events phải là auto */
+    pointer-events: auto; 
 }
-.service-card {
-    padding: 3rem 2rem;
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    background: rgba(255,255,255,0.02);
-    transition: transform 0.4s ease, border-color 0.4s ease;
+
+/* CHỮ KHỔNG LỒ BÊN TRÁI */
+.hero-left {
+    position: relative;
+    z-index: 10;
+    pointer-events: none; /* Tránh cản chuột tương tác với canvas phía sau */
+}
+.hero-headline { 
+    font-size: clamp(2.5rem, 7.5vw, 8rem); 
+    line-height: 1.05; 
+    font-weight: 800; 
+    color: var(--text-color);
+    letter-spacing: -2px;
+}
+.star-icon {
+    color: var(--accent-color);
+    font-size: 0.8em;
+    vertical-align: middle;
+    display: inline-block;
+    animation: spin 10s linear infinite;
+}
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+/* BỘ XOAY CHỮ */
+.text-rotator {
+    display: inline-grid; 
+    overflow: hidden;
+    color: var(--accent-color); 
+    vertical-align: bottom;
+    padding-bottom: 0.1em;
+}
+.text-rotator .word {
+    grid-area: 1 / 1; 
     opacity: 0;
-    transform: translateY(50px);
+    transform: translateY(100%);
+    will-change: transform, opacity;
 }
-.service-card:hover { transform: translateY(-10px); border-color: var(--accent-color); }
-.card-icon { font-size: 1.2rem; color: var(--accent-color); margin-bottom: 2rem; font-weight: bold; }
-.service-card h3 { font-size: 1.8rem; margin-bottom: 1rem; }
-.service-card p { color: var(--gray); font-size: 1rem; }
+
+/* CỤM CHỮ NHỎ BÊN PHẢI */
+.hero-right {
+    position: relative;
+    z-index: 15;
+    max-width: 320px;
+    text-align: left;
+    margin-top: 20vw;
+    pointer-events: auto; /* Để copy text được */
+}
+.hero-right p {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    line-height: 1.5;
+    font-weight: 400;
+}
+
+@media (max-width: 768px) {
+    .hero {
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        padding-top: 15vh;
+    }
+    .hero-right { margin-top: 2rem; }
+}
+
+/* =======================================
+   WHO WE ARE SECTION (KHUNG NHỎ, NỀN ĐẶC)
+   ======================================= */
+.who-we-are {
+    padding: 8rem 0;
+    position: relative;
+    z-index: 10;
+    background-color: var(--bg-color); /* Nền đen đặc chuẩn của web */
+}
+
+/* KHUNG CHỨA NỘI DUNG (Nhỏ gọn, nổi bật khỏi nền) */
+.who-frame {
+    max-width: 850px; /* Thu nhỏ card lại để ko bị lố */
+    margin: 0 auto; /* Căn giữa màn hình */
+    background: #161616; /* Sáng hơn nền web 1 chút để tách lớp */
+    border: 1px solid rgba(255, 255, 255, 0.08); /* Viền mờ */
+    border-radius: 24px;
+    padding: 5rem 8%; 
+    text-align: left;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5); /* Đổ bóng mạnh để tách hẳn khỏi background */
+}
+
+.section-label {
+    font-family: monospace;
+    color: var(--gray);
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
+}
+
+/* CHỮ KHỔNG LỒ: Ngắt rớt dòng */
+.scrub-text {
+    font-size: clamp(2.8rem, 5.5vw, 4.5rem); 
+    
+    /* FIX LỖI DÍNH CHỮ Ở 2 DÒNG NÀY */
+    line-height: 1.25; /* Nới lỏng khoảng cách giữa các dòng trên/dưới */
+    letter-spacing: 0px; /* Trả khoảng cách ngang giữa các chữ cái về bình thường */
+    
+    font-weight: 900; 
+    margin-bottom: 2.5rem;
+    
+    background: linear-gradient(
+        110deg, 
+        #ffffff 0%, 
+        #ffffff 40%, 
+        rgba(255, 255, 255, 0.1) 60%, 
+        rgba(255, 255, 255, 0.1) 100%
+    );
+    background-size: 250% 100%; 
+    background-position-x: 100%; 
+    
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    will-change: background-position-x;
+}
+
+.who-desc {
+    font-size: 1.1rem;
+    color: var(--gray);
+    max-width: 100%; /* Trải dài hết chiều rộng khung */
+    margin-bottom: 3rem;
+    line-height: 1.6;
+}
+
+/* INFINITE LOGO SLIDER */
+.logo-slider {
+    overflow: hidden;
+    width: 100%;
+    padding: 1rem 0 2rem 0;
+    margin-bottom: 3rem;
+    mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+}
+
+.logo-track {
+    display: flex;
+    align-items: center;
+    width: max-content;
+    animation: scrollLogos 20s linear infinite;
+    /* Đã xoá hiệu ứng hover pause để thanh chạy mượt liên tục */
+}
+
+/* LOGO + TÊN HÃNG */
+.logo-item {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Khoảng cách giữa SVG và Tên */
+    margin: 0 3rem;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+    cursor: default; /* Không click nên trả về chuột mặc định */
+}
+.logo-item:hover { opacity: 1; }
+
+.logo-item svg {
+    height: 28px;
+    width: auto;
+    fill: currentColor;
+    color: var(--text-color);
+}
+
+.logo-item span {
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--text-color);
+}
+
+@keyframes scrollLogos {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); } 
+}
+
+/* NÚT BẤM */
+.round-btn {
+    background: #fff;
+    color: #000;
+    border: 1px solid #fff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 1rem 2.5rem;
+}
+.round-btn:hover { background: transparent; color: #fff; }
+
+/* Responsive (Chỉnh lại tỷ lệ cho điện thoại và tablet) */
+@media (max-width: 768px) {
+    .who-we-are { padding: 5rem 0; }
+    .who-frame { 
+        padding: 3rem 6%; 
+        border-radius: 16px;
+        margin: 0 5%; /* Tạo lề hai bên để card không sát viền đt */
+    }
+    .scrub-text { font-size: 2.2rem; margin-bottom: 1.5rem; }
+    .logo-item { margin: 0 2rem; gap: 8px; }
+    .logo-item svg { height: 22px; }
+    .logo-item span { font-size: 1rem; }
+}
 
 /* Work */
 .work { padding: 8rem 0; }
@@ -128,8 +325,70 @@ a { text-decoration: none; color: inherit; }
 .socials a:hover { color: var(--accent-color); }
 
 /* Responsive */
+
+/* Responsive cho điện thoại (SP) */
 @media (max-width: 768px) {
-    .nav-links { display: none; }
+    /* Nút Hamburger */
+    .hamburger { 
+        display: flex; 
+        flex-direction: column; 
+        gap: 6px; 
+        cursor: pointer;
+        z-index: 105; /* Phải lớn hơn menu để luôn bấm được */
+    }
+    .hamburger span { 
+        width: 30px; 
+        height: 2px; 
+        background: #fff; 
+        transition: all 0.3s ease; /* Tạo hiệu ứng mượt khi biến thành dấu X */
+    }
+
+    /* Khi nút được bấm (Thêm class active) */
+    .hamburger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .hamburger.active span:nth-child(2) { transform: translateY(-8px) rotate(-45deg); }
+
+    /* Menu xổ xuống */
+    .nav-links { 
+        display: flex;
+        flex-direction: column; 
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: var(--bg-color);
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        
+        /* Hiệu ứng ẩn/hiện */
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-100%); /* Trượt từ trên trời xuống */
+        transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+        z-index: 100;
+    }
+
+    /* Khi menu được mở */
+    .nav-links.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    
+    .nav-links a { font-size: 1.5rem; }
+    
+    /* Các phần chữ khác cho mobile */
+    .hero-title { font-size: 3.5rem; }
+    .section-title { font-size: 2.5rem; margin-bottom: 2rem; }
+    .work-img { height: 40vh; }
+    .footer-bottom { justify-content: center; }
+}
+
+
+
+@media (max-width: 768px) {
+    /* .nav-links { display: none; } */
     .hamburger { display: flex; flex-direction: column; gap: 6px; }
     .hamburger span { width: 30px; height: 2px; background: #fff; }
     .hero-title { font-size: 3.5rem; }
@@ -138,11 +397,37 @@ a { text-decoration: none; color: inherit; }
     .footer-bottom { justify-content: center; }
 }
 
-
-/* Đảm bảo nội dung trang luôn có nền để không bị nhìn xuyên thấu */
 main[data-barba="container"] {
-    background-color: var(--bg-color); /* FIX LỖI MÀU TRẮNG Ở ĐÂY */
+    background-color: var(--bg-color);
     width: 100%;
     min-height: 100vh;
     transform-origin: center top; 
+}
+
+/* --- PRELOADER TRANG CHỦ --- */
+.home-preloader {
+    position: fixed; 
+    top: 0; 
+    left: 0;
+    width: 100vw; 
+    height: 100vh;
+    background-color: #0e0e11; /* Đảm bảo đồng bộ màu nền preloader */
+    z-index: 99999; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+}
+
+.preloader-text {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 2px;
+}
+
+.char-inner {
+    will-change: transform, filter; /* Tối ưu hóa render cho GSAP */
+    /* Vệt bóng mờ theo chiều dọc (trục Y) */
+    /* text-shadow: 0px 15px 10px rgba(255, 255, 255, 0.4);  */
 }
