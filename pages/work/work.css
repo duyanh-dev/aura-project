@@ -38,32 +38,69 @@
     }
 
     /* HEADER */
-    header {
-      position: fixed; top: 0; left: 0; width: 100%;
-      padding: 25px 35px;
-      display: flex; justify-content: space-between; align-items: center;
-      z-index: 10; pointer-events: none;
-      font-size: 0.75rem; letter-spacing: 1.5px; text-transform: uppercase;
-      font-family: monospace; color: rgba(255,255,255,0.7);
-    }
-    .logo { font-weight: bold; color: #fff; font-size: 0.9rem; font-family: 'Helvetica Neue', sans-serif;}
-    
-    .menu-btn {
-      pointer-events: auto; cursor: pointer;
-      display: flex; align-items: center; gap: 10px;
-      padding: 8px 16px; border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 4px; background: rgba(0,0,0,0.5);
-      transition: background 0.3s, border 0.3s;
-    }
-    .menu-btn:hover { background: #fff; color: #000; border-color: #fff; }
+   /* =======================================
+   HEADER (SELECT PROJECT BUTTON)
+   ======================================= */
+header {
+  position: fixed; 
+  /* Dời xuống đáy, nằm ngay trên thước toạ độ (hud-bottom đang ở bottom 25px) */
+  bottom: 85px; 
+  left: 0; 
+  width: 100%;
+  padding: 0 35px;
+  display: flex; 
+  justify-content: right; /* Đưa ra chính giữa cho cân đối với thước */
+  align-items: center;
+  z-index: 50; /* Thấp hơn Navbar (100) để không bị lỗi đè lớp */
+  pointer-events: none;
+}
 
-    /* MENU ẨN (SLIDE-OUT) */
-    #menu-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.6);
-      z-index: 90; opacity: 0; pointer-events: none;
-      transition: opacity 0.4s ease; backdrop-filter: blur(3px);
-    }
-    #menu-overlay.active { opacity: 1; pointer-events: auto; }
+.menu-btn {
+  pointer-events: auto; 
+  cursor: pointer;
+  display: flex; 
+  align-items: center; 
+  gap: 10px;
+  padding: 12px 30px;
+  
+  /* Làm nổi bật với màu cam nhấn của web và phát sáng nhẹ */
+  background: var(--accent-color, #ff4a32); 
+  border: 1px solid var(--accent-color, #ff4a32);
+  color: #fff;
+  border-radius: 50px; /* Bo tròn hoàn toàn dạng viên thuốc */
+  font-size: 0.85rem; 
+  font-weight: 700;
+  letter-spacing: 2px; 
+  text-transform: uppercase;
+  font-family: 'Inter', sans-serif;
+  
+  /* Đổ bóng Glow cam */
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.menu-btn:hover { 
+  background: #111; /* Đổi màu nền tối khi hover */
+  color: var(--accent-color, #ff4a32); 
+  border-color: var(--accent-color, #ff4a32);
+  transform: translateY(-4px); /* Hiệu ứng nảy lên nhẹ */
+}
+
+.menu-btn:active {
+  transform: translateY(0); 
+}
+
+/* Responsive cho Mobile (SP) */
+@media (max-width: 768px) {
+  header {
+    bottom: 75px; /* Ép sát lại thước hơn 1 chút trên điện thoại */
+    padding: 0 20px;
+  }
+  .menu-btn {
+    padding: 5px 9px;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+  }
+}
 
     #side-menu {
       position: fixed; top: 0; right: 0; width: 400px; max-width: 85vw; height: 100vh;

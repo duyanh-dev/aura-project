@@ -5,21 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Work - Interactive Index</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <link rel="stylesheet" href="../../style.css">
     <link rel="stylesheet" href="work.css" />
   </head>
   <body data-barba="wrapper">
+
+   <nav class="navbar">
+        <div class="logo">demo.space</div>
+        <ul class="nav-links">
+            <!-- Thêm ../ để chỉ hướng lùi ra thư mục ngoài cùng -->
+            <li><a href="../index.html">Trang chủ</a></li>
+            <li><a href="../index.html#services">Dịch vụ</a></li>
+            <li><a href="./">Dự án</a></li>
+            <li><a href="../about.html">Về chúng tôi</a></li>
+            <li><a href="../contact.html" class="nav-btn">Liên hệ</a></li>
+        </ul>
+        <div class="hamburger"><span></span><span></span></div>
+    </nav>
     
     <main data-barba="container" data-barba-namespace="work">
         <div class="bg-grid"></div>
 
         <!-- HEADER ĐƯỢC LÀM LẠI: Nằm gọn gàng góc phải, né navbar chính -->
-        <header style="top: 90px; z-index: 990; position: fixed; width: 100%; display: flex; justify-content: flex-end; padding-right: 35px; gap: 15px;">
+        <header >
           <!-- Nút Back thiết kế đồng bộ với nút Menu -->
-          <a href="../../index.html" class="menu-btn" style="text-decoration: none; font-size: 11px; color: #ff4a32; border-color: rgba(255, 74, 50, 0.3);">
-            [ BACK TO HOME ]
-          </a>
           <div class="menu-btn" onclick="toggleMenu(true)">
-            <span>[ INDEX / <span id="project-counter">0</span> ]</span>
+            <span>[ SELECT PROJECT ]</span>
           </div>
         </header>
 

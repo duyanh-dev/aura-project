@@ -89,9 +89,9 @@ a { text-decoration: none; color: inherit; }
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 0; /* Nằm dưới cùng */
-    /* QUAN TRỌNG: Pointer events phải là auto */
+    z-index: 0; 
     pointer-events: auto; 
+    touch-action: pan-y; /* THÊM DÒNG NÀY: Cho phép vuốt dọc cuộn trang */
 }
 
 /* CHỮ KHỔNG LỒ BÊN TRÁI */
@@ -388,9 +388,67 @@ a { text-decoration: none; color: inherit; }
 
 
 @media (max-width: 768px) {
-    /* .nav-links { display: none; } */
-    .hamburger { display: flex; flex-direction: column; gap: 6px; }
-    .hamburger span { width: 30px; height: 2px; background: #fff; }
+    /* Đảm bảo trình duyệt luôn nhận diện thao tác cuộn trên thiết bị cảm ứng */
+   html, body {
+        touch-action: pan-y; 
+        /* Đã xóa overflow-y: auto !important; để trả lại quyền khóa cuộn cho JS trên trang Work */
+        overflow-x: hidden;
+    }
+
+    /* Nút Hamburger */
+    .hamburger { 
+        display: flex; 
+        flex-direction: column; 
+        gap: 6px; 
+        cursor: pointer;
+        z-index: 105; /* Phải lớn hơn menu để luôn bấm được */
+        /* Mở rộng vùng chạm cho ngón tay trên mobile */
+        padding: 10px; 
+        margin-right: -10px;
+    }
+    .hamburger span { 
+        width: 30px; 
+        height: 2px; 
+        background: #fff; 
+        transition: all 0.3s ease; 
+    }
+
+    /* Khi nút được bấm (Thêm class active) */
+    .hamburger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .hamburger.active span:nth-child(2) { transform: translateY(-8px) rotate(-45deg); }
+
+    /* Menu xổ xuống */
+    .nav-links { 
+        display: flex;
+        flex-direction: column; 
+        position: fixed; /* Đổi thành fixed để luôn che kín màn hình, ko bị cuộn theo trang */
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: var(--bg-color);
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        
+        /* Hiệu ứng ẩn/hiện */
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-100%); 
+        transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+        z-index: 100;
+    }
+
+    /* Khi menu được mở */
+    .nav-links.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    
+    .nav-links a { font-size: 1.5rem; }
+    
+    /* Các phần chữ khác cho mobile */
     .hero-title { font-size: 3.5rem; }
     .section-title { font-size: 2.5rem; margin-bottom: 2rem; }
     .work-img { height: 40vh; }

@@ -214,7 +214,7 @@ function initHomeAnimations() {
 
     // Loại bỏ code cản lăn chuột cũ (vì đã xóa 3D Spline)
 
-    if (preloader) {
+   if (preloader) {
         gsap.set(preloader, { y: '0%', display: 'flex' });
         
         gsap.set('.char-inner', { 
@@ -240,8 +240,10 @@ function initHomeAnimations() {
             y: '-100%', 
             duration: 1.2,
             ease: "power4.inOut",
-            // Gỡ bỏ pointer-events để chắc chắn preloader ko cản chuột
-            onComplete: () => { gsap.set(preloader, { pointerEvents: 'none' }); } 
+            // FIX LỖI TOUCH MOBILE: Ép ẩn hoàn toàn khối này khỏi DOM sau khi chạy xong
+            onComplete: () => { 
+                gsap.set(preloader, { display: 'none', pointerEvents: 'none' }); 
+            } 
         }, "+=0.4"); 
     }
 
@@ -365,9 +367,14 @@ barba.init({
             before(data) { 
                 lockScrollTemporarily();
                 const nextPreloader = data.next.container.querySelector('.home-preloader');
-                const nextHero = data.next.container.querySelector('.hero-content, .hero-left, .hero-right'); // Fix bắt lỗi mảng
+                
+                // SỬA LỖI Ở ĐÂY: Dùng querySelectorAll để lấy toàn bộ cả trái và phải
+                const nextHero = data.next.container.querySelectorAll('.hero-left, .hero-right'); 
+                
                 if (nextPreloader) gsap.set(nextPreloader, { y: '0%', display: 'flex', opacity: 1, pointerEvents: 'auto' });
-                if (nextHero) gsap.set([".hero-left", ".hero-right"], { opacity: 0 }); 
+                
+                // SỬA LỖI Ở ĐÂY: Ẩn toàn bộ mảng nextHero
+                if (nextHero.length > 0) gsap.set(nextHero, { opacity: 0 }); 
             }, 
             leave(data) {
                 return gsap.to(data.current.container, { opacity: 0, duration: 0.2 });

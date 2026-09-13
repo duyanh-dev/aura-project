@@ -1,5 +1,4 @@
-let workAnimationId; 
-// Object chứa các hàm sự kiện để dễ dàng remove
+let workAnimationId = null; 
 const workEvents = {}; 
 
 window.toggleMenu = function(isOpen) {
@@ -15,20 +14,25 @@ window.toggleMenu = function(isOpen) {
         overlay.classList.remove('active');
     }
 };
+
 // ==========================================
-// HÀM KHỞI TẠO KHÔNG GIAN 3D (CHẠY KHI VÀO TRANG WORK)
+// HÀM KHỞI TẠO KHÔNG GIAN 3D
 // ==========================================
 function initWorkSpace() {
     const canvas = document.getElementById('canvas');
-    if (!canvas) return; // Thoát nếu không tìm thấy DOM (Bảo vệ code)
+    if (!canvas) return; 
 
     const viewport = document.getElementById('viewport');
     const menuListContainer = document.getElementById('menu-list-container');
     const uiX = document.getElementById('ui-x');
     const uiY = document.getElementById('ui-y');
     const uiCursor = document.getElementById('ui-cursor');
+    const projectCounter = document.getElementById('project-counter');
+    const sideMenu = document.getElementById('side-menu');
     
-    // Reset rác bộ nhớ DOM cũ (phòng khi vào lại)
+    // Bảo vệ code: Nếu thiếu 1 trong các UI cốt lõi, thoát ngay để không crash JS
+    if (!viewport || !menuListContainer || !uiX || !uiY || !uiCursor) return;
+
     canvas.innerHTML = '';
     menuListContainer.innerHTML = '';
 
@@ -49,7 +53,7 @@ function initWorkSpace() {
     ];
 
     const TOTAL_ITEMS = myProjects.length;
-    document.getElementById('project-counter').innerText = TOTAL_ITEMS;
+    if (projectCounter) projectCounter.innerText = TOTAL_ITEMS;
 
     const isMobile = window.innerWidth <= 768;
     const GAP_X = isMobile ? 270 : 440; 
@@ -66,6 +70,11 @@ function initWorkSpace() {
     const items = [];
     const startX = -((cols - 1) * GAP_X) / 2;
     let count = 0;
+
+    // Lưu trữ biến vật lý ở Scope ngoài để jumpToProject dùng chung
+    let targetX = 0, targetY = 0, dragX = 0, dragY = 0; 
+    let currentImgX = 0, currentImgY = 0, vx = 0, vy = 0; 
+    let lastMouseX = 0, lastMouseY = 0, lastDragX = 0, lastDragY = 0;
 
     window.jumpToProject = function(baseX, baseY) {
       targetX = -baseX;
@@ -87,7 +96,6 @@ function initWorkSpace() {
         const projectData = myProjects[count];
         const idx = String(count + 1).padStart(2, '0');
         
-        // 1. 3D CARD
         const el = document.createElement('div');
         el.className = 'project';
         el.innerHTML = `
@@ -102,7 +110,6 @@ function initWorkSpace() {
         canvas.appendChild(el);
         items.push({ el, img: el.querySelector('img'), baseX: x, baseY: y });
 
-        // 2. MENU ITEM
         const menuItem = document.createElement('div');
         menuItem.className = 'menu-item';
         menuItem.innerHTML = `
@@ -122,14 +129,10 @@ function initWorkSpace() {
       }
     }
 
-    // STATE VẬT LÝ (Phải reset mỗi khi vào hàm)
+    // THUỘC TÍNH VẬT LÝ
     let isDragging = false;
-    let targetX = 0, targetY = 0, dragX = 0, dragY = 0; 
-    let currentImgX = 0, currentImgY = 0, vx = 0, vy = 0; 
-    let lastMouseX = 0, lastMouseY = 0, lastDragX = 0, lastDragY = 0;
     const friction = 0.94, sensitivity = isMobile ? 1.0 : 0.8, flowFactor = 0.08; 
 
-    // HÀM RENDER FRAME
     function render() {
       if (!isDragging) {
         vx *= friction; vy *= friction;
@@ -187,9 +190,9 @@ function initWorkSpace() {
     }
     render();
 
-    // SỰ KIỆN KÉO THẢ (Đã gán vào biến để hủy)
+    // SỰ KIỆN KÉO THẢ ĐƯỢC ĐÓNG GÓI CHUẨN
     const startDrag = (x, y) => {
-      if(document.getElementById('side-menu').classList.contains('active')) return;
+      if(sideMenu && sideMenu.classList.contains('active')) return;
       isDragging = true; lastMouseX = x; lastMouseY = y; vx = 0; vy = 0; 
       viewport.style.cursor = 'grabbing';
     };
@@ -202,50 +205,55 @@ function initWorkSpace() {
     };
     const endDrag = () => { isDragging = false; viewport.style.cursor = 'grab'; };
 
-    // Gán hàm vào biến toàn cục
-    handleMouseDown = (e) => startDrag(e.clientX, e.clientY);
-    handleMouseMove = (e) => onDrag(e.clientX, e.clientY);
-    handleMouseUp = endDrag;
-    handleMenuTouchMove = (e) => e.stopPropagation();
-    handleTouchStart = (e) => startDrag(e.touches[0].clientX, e.touches[0].clientY);
-    handleTouchMove = (e) => onDrag(e.touches[0].clientX, e.touches[0].clientY);
-    handleTouchEnd = endDrag;
+    // Gán hàm vào object workEvents
+    workEvents.mousedown = (e) => startDrag(e.clientX, e.clientY);
+    workEvents.mousemove = (e) => onDrag(e.clientX, e.clientY);
+    workEvents.mouseup = endDrag;
+    workEvents.menuTouchMove = (e) => e.stopPropagation();
+    workEvents.touchStart = (e) => startDrag(e.touches[0].clientX, e.touches[0].clientY);
+    workEvents.touchMove = (e) => onDrag(e.touches[0].clientX, e.touches[0].clientY);
+    workEvents.touchEnd = endDrag;
 
-    // Lắng nghe sự kiện
-    viewport.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
-    window.addEventListener('mouseleave', handleMouseUp);
-    document.getElementById('side-menu').addEventListener('touchmove', handleMenuTouchMove);
-    viewport.addEventListener('touchstart', handleTouchStart);
-    window.addEventListener('touchmove', handleTouchMove);
-    window.addEventListener('touchend', handleTouchEnd);
+    // Kích hoạt lắng nghe
+    viewport.addEventListener('mousedown', workEvents.mousedown);
+    window.addEventListener('mousemove', workEvents.mousemove);
+    window.addEventListener('mouseup', workEvents.mouseup);
+    window.addEventListener('mouseleave', workEvents.mouseup);
+    if (sideMenu) sideMenu.addEventListener('touchmove', workEvents.menuTouchMove);
+    viewport.addEventListener('touchstart', workEvents.touchStart);
+    window.addEventListener('touchmove', workEvents.touchMove);
+    window.addEventListener('touchend', workEvents.touchEnd);
 }
 
 // ==========================================
 // HÀM DỌN DẸP RÁC (CHẠY TRƯỚC KHI RỜI TRANG WORK)
 // ==========================================
 function killWorkSpace() {
-    // 1. Tắt vòng lặp render 3D
     if (workAnimationId) {
         cancelAnimationFrame(workAnimationId);
+        workAnimationId = null;
     }
     
     const viewport = document.getElementById('viewport');
     const sideMenu = document.getElementById('side-menu');
     
-    // 2. Gỡ bỏ sự kiện (Nếu không gỡ, sang trang chủ di chuột nó vẫn báo lỗi)
-    if(viewport) {
-        viewport.removeEventListener('mousedown', handleMouseDown);
-        viewport.removeEventListener('touchstart', handleTouchStart);
+    // Gỡ bỏ sự kiện chính xác thông qua workEvents
+    if (viewport && workEvents.mousedown) {
+        viewport.removeEventListener('mousedown', workEvents.mousedown);
+        viewport.removeEventListener('touchstart', workEvents.touchStart);
     }
-    if(sideMenu) {
-        sideMenu.removeEventListener('touchmove', handleMenuTouchMove);
+    if (sideMenu && workEvents.menuTouchMove) {
+        sideMenu.removeEventListener('touchmove', workEvents.menuTouchMove);
     }
     
-    window.removeEventListener('mousemove', handleMouseMove);
-    window.removeEventListener('mouseup', handleMouseUp);
-    window.removeEventListener('mouseleave', handleMouseUp);
-    window.removeEventListener('touchmove', handleTouchMove);
-    window.removeEventListener('touchend', handleTouchEnd);
+    if (workEvents.mousemove) {
+        window.removeEventListener('mousemove', workEvents.mousemove);
+        window.removeEventListener('mouseup', workEvents.mouseup);
+        window.removeEventListener('mouseleave', workEvents.mouseup);
+        window.removeEventListener('touchmove', workEvents.touchMove);
+        window.removeEventListener('touchend', workEvents.touchEnd);
+    }
+
+    // Xóa trắng bộ nhớ Object
+    Object.keys(workEvents).forEach(key => delete workEvents[key]);
 }
