@@ -8,6 +8,37 @@
     --border-color: #222222;
 }
 
+/* =======================================
+   CUSTOM SCROLLBAR (TINH TẾ & HIỆN ĐẠI)
+   ======================================= */
+/* Hỗ trợ Firefox */
+html {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.15) var(--bg-color);
+}
+
+/* Hỗ trợ Chrome, Edge, Safari */
+::-webkit-scrollbar {
+    width: 6px; /* Thiết kế mỏng, thanh lịch */
+    height: 6px; /* Dành cho cuộn ngang nếu có */
+}
+
+/* Phần nền của thanh cuộn */
+::-webkit-scrollbar-track {
+    background: var(--bg-color); /* Ẩn mình vào nền web */
+}
+
+/* Phần tay cầm (Thumb) */
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15); /* Màu xám mờ ảo */
+    border-radius: 10px; /* Bo góc hoàn toàn */
+}
+
+/* Khi rê chuột vào tay cầm */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.35); /* Sáng lên nhẹ nhàng khi tương tác */
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -165,6 +196,34 @@ a { text-decoration: none; color: inherit; }
     position: relative;
     z-index: 10;
     background-color: var(--bg-color); /* Nền đen đặc chuẩn của web */
+    overflow: hidden
+}
+
+/* Lớp Background Dãy Núi */
+.who-we-are::before {
+    content: "";
+    position: absolute;
+    bottom: 10%; /* Neo dãy núi cách đáy chính xác 10% */
+    left: 0;
+    width: 100%;
+    height: 55%; /* Chiều cao vùng hiển thị núi */
+    
+    /* URL ảnh dãy núi sương mù (bạn có thể đổi link ảnh của riêng mình) */
+    background-image: url('./images/moutain.jpg'); 
+    background-size: cover;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    
+    z-index: -1; /* Đẩy xuống sau cùng, dưới các text và card */
+    opacity: 0.5; /* Độ mờ vừa đủ để không làm rối nội dung chính */
+    
+    /* Hiệu ứng hòa trộn: Mờ dần ở mép trên và mép dưới để tan vào nền đen */
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 25%, black 65%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 25%, black 65%, transparent 100%);
+    
+    /* Làm nhòe quang học để tạo chiều sâu (cảm giác núi ở rất xa) */
+    filter: blur(3px); 
+    pointer-events: none; /* Không cản trở các thao tác chuột */
 }
 
 /* KHUNG CHỨA NỘI DUNG (Nhỏ gọn, nổi bật khỏi nền) */
@@ -294,6 +353,19 @@ a { text-decoration: none; color: inherit; }
     .logo-item { margin: 0 2rem; gap: 8px; }
     .logo-item svg { height: 22px; }
     .logo-item span { font-size: 1rem; }
+
+     /* Tinh chỉnh ảnh núi cho Smartphone */
+    .who-we-are::before {
+        height: 60%; /* Thu ngắn chiều cao ảnh trên mobile để núi không bị kéo lên quá cao */
+        bottom: 30%; /* Hạ sát xuống đáy hơn một chút */
+        
+        /* Chỉnh lại gradient mask để phần mờ ngắn và mượt hơn trên màn hình nhỏ */
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 40%, black 60%, transparent 100%);
+        mask-image: linear-gradient(to bottom, transparent 0%, black 40%, black 60%, transparent 100%);
+        
+        /* (Tùy chọn) Giảm nhẹ độ mờ nếu muốn nó chìm hẳn vào nền đen */
+        opacity: 1; 
+    }
 }
 
 /* Work */
